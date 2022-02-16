@@ -18,15 +18,22 @@
     <%
         DataBaseHandler dbHandler = new DataBaseHandler();
         ResultSet departmentQueries = dbHandler.getAllRecords("department");
+        String chosenName = "";
+        String chosenDate = "";
         try {
             int counter = 0;
             while (departmentQueries.next()) {
+                String name = departmentQueries.getString("name");
+                String date = departmentQueries.getString("foundation_date");
     %>
     <p>
-        <input type="radio" id="departmentChoice + <%=++counter%>>" name="department">
+        <input type="radio" id="departmentChoice + <%=++counter%>>" name="department" onclick="<%
+            chosenName = name;
+            chosenDate = date;
+        %>">
         <label for="departmentChoice + <%=counter%>>">
-            <%= departmentQueries.getString("name") %>
-            <%= departmentQueries.getString("foundation_date") %>
+            <%= name %>
+            <%= date %>
         </label>
     </p>
     <%
@@ -35,6 +42,9 @@
             sqle.printStackTrace();
         }
     %>
+    </form>
+    <form method="post" action="editDepartment.jsp?departmentName=<%=chosenName%>&departmentFoundationDate=<%=chosenDate%>">
+        <button>Редактировать</button>
     </form>
 
 </body>
